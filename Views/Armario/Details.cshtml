@@ -1,0 +1,57 @@
+@model BeachSys.Models.Armario
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4>Armario</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Nome)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Nome)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.X)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.X)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Y)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Y)
+        </dd>
+        <dt class = "col-sm-2">
+            Compartimentos disponíveis
+        </dt>
+        <dd class = "col-sm-10">
+            <a id="compDisp" class="text-decoration-none" asp-area="" asp-controller="Compartimento" asp-action="Index" asp-route-id="@Model.ArmarioId">@Html.DisplayFor(model => model.compartimentosDisponíveis)</a>
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.ArmarioId">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    <script>
+        const compDisp = document.querySelector('#compDisp');
+        window.addEventListener('load', e=>{
+            console.log(compDisp.classList)
+            if(compDisp.textContent == "0"){
+                compDisp.classList.add("text-danger");
+            }
+            else{
+                compDisp.classList.add("text-success");
+            }
+        })
+    </script>
+}

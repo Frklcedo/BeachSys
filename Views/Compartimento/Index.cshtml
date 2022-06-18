@@ -1,0 +1,98 @@
+@model UsuarioCompartimentoViewModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+@if(Model.Usuario.IsRoot){
+    <p>
+        <a asp-action="Create">Create New</a>
+    </p>
+}
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Número
+            </th>
+            <th>
+                Tamanho
+            </th>
+            <th>
+                Disponibilidade
+            </th>
+            <th>
+                Armario
+            </th>
+            <th>
+                Uso
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.Compartimentos) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Numero)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Tamanho)
+            </td>
+            @if(item.IsDisponivel){
+                <td class="text-success">
+                    Disponível
+                </td>
+            }
+            else{
+                <td class="text-danger">
+                    Ocupado
+                </td>
+            }
+            <td>
+                @Html.DisplayFor(modelItem => item.Armario.Nome)
+            </td>
+            @if(item.Usuario != null){
+                if(Model.Usuario.IsRoot){
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Usuario.Cpf)
+                    </td>
+                }
+                else{
+                    <td class="text-success">
+                        Ocupado
+                    </td>
+                }
+            }
+            else{
+                <td class="text-success">
+                    Desocupado
+                </td>
+            }
+            <td>
+                @if(Model.Usuario.IsRoot){
+                    <a asp-action="Edit" asp-route-id="@item.CompartimentoId">Edit</a> <span>|</span>
+                    <a asp-action="Details" asp-route-id="@item.CompartimentoId">Details</a> <span>|</span>
+                    <a asp-action="Delete" asp-route-id="@item.CompartimentoId">Delete</a>
+                }
+                else{
+                    <form asp-controller="Compartimento" asp-action="Alugar" method="post">
+                        <input type="hidden" value="@Model.Usuario.UsuarioId" method="post" name="idusuario" />
+                        <input type="hidden" value="@item.CompartimentoId" name="id" />
+                        <input class="btn border-0 text-white btn-primary" type="submit" value="Alugar">
+                    </form>
+                }
+            </td>
+        </tr>
+}
+
+    </tbody>
+</table>
+@if(Model.Usuario.IsRoot){
+    <form asp-controller="Home" asp-action="ControlRedirect" method="post">
+        <input type="hidden" value="@Model.Usuario.UsuarioId" name="id" />
+        <input class="btn btn-primary" type="submit" value="Painel de controle">
+    </form>
+}

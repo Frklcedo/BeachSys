@@ -1,0 +1,96 @@
+@model UsuarioArmarioViewModel
+
+@{
+    ViewData["Title"] = "Index";
+    var id = TempData["usuario"];
+}
+
+<h1 class="text-center">Index</h1>
+@if(Model != null){
+    if(Model.Usuario.IsRoot){
+        <p>
+            <a asp-action="Create">Create New</a>
+        </p>
+    }
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    Nome
+                </th>
+                <th>
+                    X
+                </th>
+                <th>
+                    Y
+                </th>
+                <th>
+                    Compartimentos disponíveis
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+    @foreach (var item in Model.Armarios) {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Nome)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.X)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Y)
+                </td>
+                <td>
+                    <form asp-controller="Compartimento" asp-action="Index" method="post">
+                        <input type="hidden" value="@Model.Usuario.UsuarioId" name="idusuario" />
+                        <input type="hidden" value="@item.ArmarioId" name="id" />
+                        <input class="btn compDisp" type="submit" value="@item.compartimentosDisponíveis">
+                    </form>
+                </td>
+                <td>
+                    @if(Model.Usuario.IsRoot){
+                        <a asp-action="Edit" asp-route-id="@item.ArmarioId">Edit</a> <span>|</span>
+                        <a asp-action="Details" asp-route-id="@item.ArmarioId">Details</a> <span>|</span>
+                        <a asp-action="Delete" asp-route-id="@item.ArmarioId">Delete</a>
+                    }
+                </td>
+            </tr>
+    }
+        </tbody>
+    </table>
+    <form asp-controller="Home" asp-action="ControlRedirect" method="post">
+        <input type="hidden" value="@Model.Usuario.UsuarioId" name="id" />
+        <input class="btn btn-primary" type="submit" value="Painel de controle">
+    </form>
+}
+else if(id != null){
+    <div class="row justify-content-center">
+        <form method="post" asp-controller="Armario" asp-action="Index" class="card col-md-3">
+            <input type="hidden" value="@id" method="post" name="idusuario" />
+            <button class="text-decoration-none border-0 bg-white" type="submit">
+                <div class="card-header text-white bg-warning text-center">Armários</div>
+                <div class="card-body text-center text-dark">
+                    Informações sobre todos os armários
+                </div>
+            </button>
+        </form>
+    </div>
+}
+
+@section Scripts {
+    <script>
+        const compDisp = document.querySelectorAll('.compDisp');
+        window.addEventListener('load', e=>{
+            compDisp.forEach(compdisp => {
+                if(compdisp.textContent == "0"){
+                    compdisp.classList.add("btn-danger");
+                }
+                else{
+                    compdisp.classList.add("btn-success");
+                }
+            })
+        })
+    </script>
+}

@@ -11,7 +11,7 @@ namespace BeachSys.Models
     {
         public int CompartimentoId { get; set; }
         [Required]
-        public string Nome { get; set; }
+        public int Numero { get; set; }
         [Required]
         public string Tamanho { get; set; }
         public bool IsDisponivel { get; set; }

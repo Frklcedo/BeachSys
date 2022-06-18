@@ -1,0 +1,41 @@
+@model BeachSys.Models.Usuario
+@{
+    ViewData["Title"] = "Painel de Controle";
+    var id = TempData["usuario"];
+}
+
+<div>
+    <h1 class="display-4">@ViewData["Title"]</h1>
+    @if(id != null){
+        <div class="row justify-content-between">
+            <form method="post" asp-controller="Usuario" asp-action="Index" class="card col-md-3">
+                <input type="hidden" value="@id" method="post" name="idusuario" />
+                <button type="submit" class="text-decoration-none border-0 bg-white">
+                    <div class="card-header text-white bg-danger text-center">Usuários</div>
+                    <div class="card-body text-center text-dark">
+                        Informações sobre os Usuários
+                    </div>
+                </button>
+            </form>
+            <form method="post" asp-controller="Armario" asp-action="Index" class="card col-md-3">
+                <input type="hidden" value="@id" method="post" name="idusuario" />
+                <button class="text-decoration-none border-0 bg-white" type="submit">
+                    <div class="card-header text-white bg-warning text-center">Armários</div>
+                    <div class="card-body text-center text-dark">
+                        Informações sobre todos os armários
+                    </div>
+                </button>
+            </form>
+            <form method="post" asp-controller="Compartimento" asp-action="Index" class="card col-md-3">
+                <input type="hidden" value="@id" method="post" name="idusuario" />
+                <button class="text-decoration-none border-0 bg-white" type="submit">
+                    <div class="card-header text-white bg-info text-center">Compartimentos</div>
+                    <div class="card-body text-center text-dark">
+                        Informações sobre todos os compartimentos gerais
+                    </div>
+                </button>
+            </form>
+        </div>    
+
+    }
+</div>
